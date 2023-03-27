@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt_br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Api com PayPal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <img src="site.png" alt="Banner do Portal site">
+    </header>
+    <main>
+        <div class="product" >
+            <div class="product_title">Criar Site</div>
+            <div class="product_price"></div>
+            <div class="product_image"><img src="criar.png" alt="e-book inteligência artificial"></div>
+                <div class="product_button">
+                    <div class="product_button_label" ></div>
+                </div>
+            <div id="smart-button-container">
+                <div style="text-align: center;">
+                <div id="paypal-button-container"></div>
+                </div>
+            </div>
+        </div>
+          <script src="https://www.paypal.com/sdk/js?client-id=sb&enable-funding=venmo&currency=BRL" data-sdk-integration-source="button-factory"></script>
+        <script>
+          function initPayPalButton() {
+            paypal.Buttons({
+              style: {
+                shape: 'rect',
+                color: 'gold',
+                layout: 'vertical',
+                label: 'buynow',
+                
+              },
+      
+              createOrder: function(data, actions) {
+                return actions.order.create({
+                  purchase_units: [{"description":"Receita de como criar site em 10 minutos em produção","amount":{"currency_code":"BRL","value":55}}]
+                });
+              },
+      
+              onApprove: function(data, actions) {
+                return actions.order.capture().then(function(orderData) {
+                  
+                  // Full available details
+                  console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+      
+                  // Show a success message within this page, e.g.
+                  const element = document.getElementById('paypal-button-container');
+                  element.innerHTML = '';
+                  element.innerHTML = '<h3>Thank you for your payment!</h3>';
+      
+                  // Or go to another URL:  actions.redirect('thank_you.html');
+                  
+                });
+              },
+      
+              onError: function(err) {
+                console.log(err);
+              }
+            }).render('#paypal-button-container');
+          }
+          initPayPalButton();
+        </script>
+
+
+
+
+
+
+
+
+    </main>
+    <footer>
+        <strong>Portal e-book </strong>
+    </footer>
+  </body>
+</html>
